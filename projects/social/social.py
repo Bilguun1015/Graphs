@@ -1,3 +1,18 @@
+import random
+
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -45,9 +60,20 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
-
+        for user in range(1,num_users+1):
+            self.add_user(user)
         # Create friendships
-
+        
+        counter = 0
+        while not counter >= (num_users * avg_friendships):
+            random_user = random.randint(1,num_users)
+            random_friend = random.randint(1,num_users)
+            if len(self.friendships[random_user]) < 10:
+                if not random_friend in self.friendships[random_user]:
+                    if random_user != random_friend:
+                        self.add_friendship(random_user, random_friend)
+                        counter += 2
+            
     def get_all_social_paths(self, user_id):
         """
         Takes a user's user_id as an argument
@@ -59,12 +85,23 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        
+        queue = Queue()
+        queue.enqueue([user_id])
+        while queue.size() > 0:
+            path = queue.dequeue()
+            user = path[-1]
+            if user not in visited:
+                visited[user] = path
+                for next_user in self.friendships[user]:
+                    new_path = list(path)
+                    new_path.append(next_user)
+                    queue.enqueue(new_path)
         return visited
-
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populate_graph(10, 2)
+    sg.populate_graph(100, 10)
     print(sg.friendships)
     connections = sg.get_all_social_paths(1)
     print(connections)
