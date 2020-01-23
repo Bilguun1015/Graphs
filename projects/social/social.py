@@ -66,9 +66,9 @@ class SocialGraph:
         
         counter = 0
         while not counter >= (num_users * avg_friendships):
-            random_user = random.randint(1,10)
-            random_friend = random.randint(1,10)
-            if len(self.friendships[random_user]) < 4:
+            random_user = random.randint(1,num_users)
+            random_friend = random.randint(1,num_users)
+            if len(self.friendships[random_user]) < 10:
                 if not random_friend in self.friendships[random_user]:
                     if random_user != random_friend:
                         self.add_friendship(random_user, random_friend)
@@ -101,7 +101,7 @@ class SocialGraph:
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populate_graph(10, 2)
+    sg.populate_graph(100, 10)
     print(sg.friendships)
     connections = sg.get_all_social_paths(1)
     print(connections)
