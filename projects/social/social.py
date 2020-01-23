@@ -92,13 +92,11 @@ class SocialGraph:
             path = queue.dequeue()
             user = path[-1]
             if user not in visited:
-                if user == self.friendships[9]:
-                    return path
-            visited[user] = [user]
-            for next_user in self.friendships[user]:
-                new_path = list(path)
-                new_path.append(next_user)
-                queue.enqueue(new_path)
+                visited[user] = path
+                for next_user in self.friendships[user]:
+                    new_path = list(path)
+                    new_path.append(next_user)
+                    queue.enqueue(new_path)
         return visited
 
 if __name__ == '__main__':
